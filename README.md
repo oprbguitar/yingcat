@@ -32,3 +32,5 @@ No se agregaron dependencias de producción, APIs, fuentes remotas ni audio. Des
 
 El motor ofrece 8192 combinaciones (4096 por gato) con ocho estructuras narrativas. Pruebas exhaustivas: 100–220 palabras y ausencia de textos duplicados. Cobertura del motor: 99.19% líneas y 84% ramas.
 En móviles pequeños el panel puede cubrir la ilustración. Se puede cerrar tocando el margen exterior o con un toque breve en la posición de cualquier gato, incluso bajo el panel. Desplazar el contenido, mantener el toque o seleccionar texto no lo cierra.
+
+Actualización: Cerrar mensaje permanece visible mientras se desplaza el relato, también en móvil. Los párrafos combinan rojo/azul y fragmentos resaltados al azar; los relatos positivos tachan un fragmento completo. Cada toque sobre gato reproduce un miau sintetizado localmente con Web Audio (según disponibilidad de audio del navegador y volumen del dispositivo). story-presentation.js preserva el texto mediante nodos DOM seguros y cat-sound.js genera el sonido sin red. Prueba adicional: node tests/message.test.cjs.

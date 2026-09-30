@@ -9,3 +9,5 @@ Capas raster idénticas con máscaras de cabeza suavizadas y relativas al viewBo
 Estados explícitos: idle, white-hover, black-hover, white-react, black-react, story-opening, story-visible, story-closing, easter-egg. Sin apilar relatos. Cinco pointerdowns en 1800ms interrumpen el flujo.
 Accesibilidad: teclado, foco visible en silueta, diálogo con nombre español y foco de lectura, Escape, cierre exterior, restauración de foco. Panel desplazable internamente; sin scroll de la página. Responsive 360/768/1280/1600px.
 Sin APIs, tipografías remotas, dependencias añadidas, sonidos ni destellos. Los relatos son ficción literaria, no diagnósticos ni certezas sobre el futuro real.
+
+Refinamiento: el relato incorpora párrafos alternados rojo claro #ff9797 y azul #8abfff, con contraste sobre negro, frases resaltadas y un fragmento tachado en relatos positivos. Acción Cerrar mensaje siempre accesible al pie del panel; solo el texto tiene scroll. Miau local sintetizado tras gesto explícito, sin autoplay ni red. La portada inicial permanece intacta.

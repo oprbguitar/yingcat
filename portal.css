@@ -75,3 +75,30 @@ main { width: 100vw; height: 100dvh; display: grid; place-items: center; overflo
   @keyframes quiet-reaction { 50% { opacity: .88; } }
   @keyframes quiet-reveal { from { opacity: 0; } to { opacity: 1; } }
 }
+
+/* Temporary reading surface; its action stays accessible while text scrolls. */
+:root {
+  --story-red: #ff9797;
+  --story-blue: #8abfff;
+  --highlight-surface: #342d19;
+  --highlight-text: #ffe4a0;
+  --control-height: 48px;
+  --control-line: #555;
+  --control-surface: #181818;
+  --control-hover: #252525;
+  --control-active: #303030;
+}
+.story-panel { display: flex; flex-direction: column; overflow: hidden; }
+#story-text { min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; white-space: normal; padding-right: var(--space-1); }
+.story-paragraph { margin: 0 0 var(--space-3); }
+.story-paragraph:last-child { margin-bottom: 0; }
+.tone-red { color: var(--story-red); }
+.tone-blue { color: var(--story-blue); }
+.story-highlight { color: var(--highlight-text); background: var(--highlight-surface); }
+.story-strike { text-decoration-thickness: 1px; text-decoration-color: currentColor; opacity: .85; }
+.story-actions { flex-shrink: 0; padding-top: var(--space-3); }
+.story-close { width: 100%; min-height: var(--control-height); border: 1px solid var(--control-line); background: var(--control-surface); color: var(--text); font: inherit; font-size: var(--font-size); cursor: pointer; touch-action: manipulation; }
+.story-close:hover { background: var(--control-hover); }
+.story-close:active { background: var(--control-active); }
+.story-close:focus-visible { outline: 2px solid var(--story-blue); outline-offset: 2px; }
+.story-close:disabled { opacity: .5; cursor: default; }

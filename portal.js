@@ -38,7 +38,8 @@ function closeStory() {
 
 function showStory(cat) {
   const story = Predictions.generateStory(cat);
-  storyText.textContent = story.text;
+  StoryPresentation.render(storyText, story.text, cat);
+  storyText.scrollTop = 0;
   panel.dataset.storyId = story.id;
   overlay.dataset.cat = cat;
   overlay.dataset.phase = 'opening';
@@ -82,7 +83,8 @@ function hitsCatAt(x, y) {
 
 // Capture before activation so the fifth press cancels the pending prediction.
 document.querySelector('main').addEventListener('pointerdown', event => {
-  if (!event.isPrimary || event.button !== 0) return;
+  if (!event.isPrimary || event.button !== 0 || event.target.closest('.story-close')) return;
+  if (hitsCatAt(event.clientX, event.clientY)) CatSound.play();
   if (event.target.closest('.story-panel') && !hitsCatAt(event.clientX, event.clientY)) return;
   if (state === 'easter-egg') return;
   const now = performance.now();
@@ -104,6 +106,7 @@ for (const zone of zones) {
   zone.addEventListener('keydown', event => {
     if ((event.key === 'Enter' || event.key === ' ') && !event.repeat) {
       event.preventDefault();
+      CatSound.play();
       activate(cat, zone);
     }
   });
@@ -113,7 +116,9 @@ let storyPress;
 overlay.addEventListener('pointerdown', event => {
   storyPress = { x: event.clientX, y: event.clientY, time: performance.now() };
 });
+document.querySelector('.story-close').addEventListener('click', closeStory);
 overlay.addEventListener('pointerup', event => {
+  if (event.target.closest('.story-close')) return;
   if (!event.target.closest('.story-panel')) { closeStory(); return; }
   // Keep a tap on either cat meaningful even when the reading panel covers it.
   // Scrolling, long presses and text selection must not dismiss the story.
@@ -126,7 +131,8 @@ document.addEventListener('keydown', event => {
   if (event.key === 'Escape') closeStory();
   if (event.key === 'Tab' && state.startsWith('story-')) {
     event.preventDefault();
-    panel.focus({ preventScroll: true });
+    const closeButton = document.querySelector('.story-close');
+    (document.activeElement === closeButton ? panel : closeButton).focus({ preventScroll: true });
   }
 });
 reducedMotion.addEventListener('change', () => {
