@@ -1,0 +1,52 @@
+:root {
+  --background: #000;
+  --portal-size: min(78vmin, 850px);
+  --white-duration: 1100ms;
+  --black-duration: 680ms;
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --white-x: 1px;
+  --white-y: -3px;
+  --white-scale: 1.012;
+  --white-angle: .4deg;
+  --black-x: -2px;
+  --black-scale: 1.018;
+  --black-angle: -.8deg;
+  --black-return: .5deg;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--background); overflow: hidden; }
+main { width: 100vw; height: 100dvh; display: grid; place-items: center; overflow: hidden; }
+.portal { position: relative; width: var(--portal-size); aspect-ratio: 1; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
+.portal img, .zones { position: absolute; inset: 0; width: 100%; height: 100%; }
+.portal img { object-fit: contain; -webkit-user-drag: none; pointer-events: none; }
+.zones { overflow: visible; }
+.zones path { fill: transparent; stroke: none; cursor: pointer; outline: none; }
+/* Keyboard focus follows the illustration instead of adding visible UI. */
+.zones path:focus-visible { filter: brightness(1); }
+.portal:has(path:focus-visible) img { filter: brightness(1.08); }
+.portal.white img { animation: breathe var(--white-duration) var(--ease); }
+.portal.black img { animation: alert var(--black-duration) var(--ease); }
+@keyframes breathe {
+  0%, 100% { transform: none; }
+  45% { transform: translate(var(--white-x), var(--white-y)) scale(var(--white-scale)) rotate(var(--white-angle)); }
+}
+@keyframes alert {
+  0%, 100% { transform: none; }
+  30% { transform: translateX(var(--black-x)) rotate(var(--black-angle)) scale(var(--black-scale)); }
+  65% { transform: rotate(var(--black-return)); }
+}
+@media (max-width: 767px) { :root { --portal-size: min(92vmin, 700px); } }
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --white-duration: 160ms;
+    --black-duration: 160ms;
+    --white-x: 0px;
+    --white-y: -.5px;
+    --white-scale: 1;
+    --white-angle: 0deg;
+    --black-x: .5px;
+    --black-scale: 1;
+    --black-angle: 0deg;
+    --black-return: 0deg;
+  }
+}
