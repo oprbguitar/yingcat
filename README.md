@@ -10,7 +10,7 @@ El gato blanco cuenta una historia favorable; el negro, una ficción sombría. H
 
 Cinco pulsaciones rápidas en 1800ms interrumpen la reacción y muestran durante 2200ms: «¡Se ve que tienes mucho tiempo!!». Después vuelve la ilustración.
 
-Todo el contenido es ficción literaria de entretenimiento, generado localmente. No ofrece diagnósticos ni certezas sobre sucesos reales. Los relatos tienen 100–220 palabras en español; el motor evita repeticiones consecutivas por gato y usa crypto.getRandomValues con fallback.
+Todo el contenido es ficción literaria de entretenimiento, generado localmente. No ofrece diagnósticos ni certezas sobre sucesos reales. Los relatos tienen 50–95 palabras en español; el motor evita repeticiones consecutivas por gato y usa crypto.getRandomValues con fallback.
 
 ## Archivos
 
@@ -28,9 +28,14 @@ La imagen img/portal.png se conserva sin modificaciones. Las máscaras suavizan 
 Motor: node --test tests/predictions.test.cjs.
 Interfaz: node tests/portal.test.cjs. Esta prueba usa Playwright del runtime local de Codex y Edge instalado; fuera de ese entorno adapta la ruta require de Playwright.
 
-No se agregaron dependencias de producción, APIs, fuentes remotas ni audio. Después de cargar los archivos no se realizan solicitudes para generar relatos.
+No se agregaron dependencias de producción, APIs ni fuentes remotas. Después de cargar los archivos no se realizan solicitudes para generar relatos.
 
-El motor ofrece 8192 combinaciones (4096 por gato) con ocho estructuras narrativas. Pruebas exhaustivas: 100–220 palabras y ausencia de textos duplicados. Cobertura del motor: 99.19% líneas y 84% ramas.
+El motor combina aperturas conversacionales, escenas, consecuencias, vínculos y finales. Evita repetir tanto el relato como la apertura inmediata por gato. Las pruebas comprueban longitud, variedad y tono de ficción.
 En móviles pequeños el panel puede cubrir la ilustración. Se puede cerrar tocando el margen exterior o con un toque breve en la posición de cualquier gato, incluso bajo el panel. Desplazar el contenido, mantener el toque o seleccionar texto no lo cierra.
 
 Actualización: Cerrar mensaje permanece visible mientras se desplaza el relato, también en móvil. Los párrafos combinan rojo/azul y fragmentos resaltados al azar; los relatos positivos tachan un fragmento completo. Cada toque sobre gato reproduce un miau sintetizado localmente con Web Audio (según disponibilidad de audio del navegador y volumen del dispositivo). story-presentation.js preserva el texto mediante nodos DOM seguros y cat-sound.js genera el sonido sin red. Prueba adicional: node tests/message.test.cjs.
+
+El panel ocupa como máximo 62% del alto en desktop y 70% en móvil. Algunas letras al azar reciben brillo, un pulso lento de dos ciclos o una leve fractura visual. Se conserva el texto y el modo de movimiento reducido elimina el pulso. Prueba: node tests/variety.test.cjs.
+
+
+Catálogo actual: 98 304 combinaciones (49 152 por gato), con doce aperturas independientes por gato y ocho estructuras. Cobertura del motor: 99.36% líneas y 85.19% ramas; nueve pruebas unitarias.

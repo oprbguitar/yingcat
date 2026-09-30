@@ -10,10 +10,15 @@
       'primero aparecen dudas, cansancio y una carpeta desordenada',
       'El presupuesto sigue siendo limitado',
       'una demora', 'un silencio incómodo', 'una mañana agotadora',
+      'Un viaje demorado', 'Una tarea pendiente', 'silencios incómodos', 'Una mañana cansada',
       'una preocupación', 'una compra aplazada'
     ];
-    const phrase = difficulties.find(value => text.includes(value));
-    if (phrase) return [text.indexOf(phrase), text.indexOf(phrase) + phrase.length];
+    const lowered = text.toLocaleLowerCase('es');
+    const phrase = difficulties.find(value => lowered.includes(value.toLocaleLowerCase('es')));
+    if (phrase) {
+      const start = lowered.indexOf(phrase.toLocaleLowerCase('es'));
+      return [start, start + phrase.length];
+    }
     const words = [...text.matchAll(/\S+/g)];
     const count = Math.min(words.length, 4 + randomIndex(4));
     return words.length ? [words[0].index, words[count - 1].index + words[count - 1][0].length] : null;
@@ -59,6 +64,36 @@
       const strike = cat === 'white' && paragraphIndex === 0 ? phraseRange(part) : null;
       appendParagraph(container, part, (paragraphIndex + offset) % 2 ? 'blue' : 'red', strike);
       paragraphIndex += 1;
+    });
+    decorateLetters(container);
+  }
+
+  function decorateLetters(container) {
+    const effect = ['none', 'glow', 'pulse', 'fracture'][randomIndex(4)];
+    if (effect === 'none') return;
+    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
+    const candidates = [];
+    while (walker.nextNode()) {
+      const node = walker.currentNode;
+      if (!node.parentElement.closest('.story-paragraph')) continue;
+      for (const match of node.textContent.matchAll(/[a-záéíóúüñ]/gi)) {
+        candidates.push({ node, offset: match.index });
+      }
+    }
+    const count = Math.min(candidates.length, 1 + randomIndex(3));
+    const selected = [];
+    for (let index = 0; index < count; index += 1) {
+      const available = candidates.filter(candidate => !selected.includes(candidate));
+      selected.push(available[randomIndex(available.length)]);
+    }
+    // Descending offsets keep positions valid when several letters share a node.
+    selected.sort((first, second) => second.offset - first.offset).forEach(({ node, offset }) => {
+      const letterNode = node.splitText(offset);
+      letterNode.splitText(1);
+      const letter = document.createElement('span');
+      letter.className = `story-letter letter-${effect}`;
+      letter.textContent = letterNode.textContent;
+      letterNode.replaceWith(letter);
     });
   }
 

@@ -102,3 +102,17 @@ main { width: 100vw; height: 100dvh; display: grid; place-items: center; overflo
 .story-close:active { background: var(--control-active); }
 .story-close:focus-visible { outline: 2px solid var(--story-blue); outline-offset: 2px; }
 .story-close:disabled { opacity: .5; cursor: default; }
+
+/* Compact reading window with occasional, restrained typographic anomalies. */
+:root { --panel-width: 620px; --story-window: 62dvh; --letter-duration: 2600ms; }
+.story-panel { max-height: var(--story-window); }
+.story-letter { display: inline-block; }
+.letter-glow { text-shadow: 0 0 5px currentColor, 0 0 10px currentColor; }
+.letter-pulse { animation: letter-breathe var(--letter-duration) ease-in-out 2; }
+.letter-fracture { transform: skewX(-8deg); text-shadow: -1px 0 var(--story-red), 1px 0 var(--story-blue); }
+@keyframes letter-breathe { 0%, 100% { opacity: 1; } 50% { opacity: .65; text-shadow: 0 0 6px currentColor; } }
+@media (max-width: 767px) { :root { --story-window: 70dvh; } }
+@media (prefers-reduced-motion: reduce) {
+  .letter-pulse { animation: none; text-shadow: 0 0 4px currentColor; }
+  .letter-fracture { transform: none; }
+}

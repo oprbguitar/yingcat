@@ -11,3 +11,5 @@ Accesibilidad: teclado, foco visible en silueta, diálogo con nombre español y 
 Sin APIs, tipografías remotas, dependencias añadidas, sonidos ni destellos. Los relatos son ficción literaria, no diagnósticos ni certezas sobre el futuro real.
 
 Refinamiento: el relato incorpora párrafos alternados rojo claro #ff9797 y azul #8abfff, con contraste sobre negro, frases resaltadas y un fragmento tachado en relatos positivos. Acción Cerrar mensaje siempre accesible al pie del panel; solo el texto tiene scroll. Miau local sintetizado tras gesto explícito, sin autoplay ni red. La portada inicial permanece intacta.
+
+Variedad editorial: mensajes conversacionales breves de 50–95 palabras; panel máximo 62% del alto en desktop y 70% en móvil, con scroll interno si hace falta. Algunas letras muestran brillo, pulso lento (dos ciclos) o fractura ligera; nunca destellos rápidos. Reduced motion elimina pulso e inclinación. Finales literarios ocasionalmente interrumpidos, conservando ficción y sin enlace de contacto inventado.
