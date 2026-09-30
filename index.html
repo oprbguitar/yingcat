@@ -6,17 +6,37 @@
   <meta name="theme-color" content="#000000">
   <title>Destiny</title>
   <link rel="stylesheet" href="portal.css">
+  <script src="predictions.js" defer></script>
   <script src="portal.js" defer></script>
 </head>
 <body>
   <main aria-label="Portal de Destiny">
     <div class="portal">
-      <img src="img/portal.png" width="1280" height="1280" alt="Un gato blanco dormido y un gato negro alerta, entrelazados en forma de yin-yang" draggable="false" fetchpriority="high">
-      <svg class="zones" viewBox="0 0 1280 1280" aria-label="Gatos interactivos">
-        <path role="button" tabindex="0" aria-label="Animar gato blanco" data-cat="white" d="M 640 50 C 955 35 1135 228 1230 490 C 1196 518 1180 523 1195 578 C 1260 888 1075 1158 715 1180 C 949 1108 1010 936 972 817 C 933 685 855 625 718 611 C 619 610 568 581 561 520 L 587 354 C 529 402 448 443 382 446 C 273 408 307 270 377 175 C 444 92 541 52 640 50 Z"/>
-        <path role="button" tabindex="0" aria-label="Animar gato negro" data-cat="black" d="M 640 50 C 413 54 298 153 208 285 C 138 380 77 454 68 505 L 82 590 C 13 798 119 1046 332 1150 C 457 1211 591 1214 715 1180 C 949 1108 1010 936 972 817 C 933 685 855 625 718 611 C 619 610 568 581 561 520 L 587 354 C 529 402 448 443 382 446 C 273 408 307 270 377 175 C 444 92 541 52 640 50 Z"/>
+      <svg class="portal-art" viewBox="0 0 1280 1280" role="group" aria-label="Un gato blanco dormido y un gato negro alerta, entrelazados en forma de yin-yang">
+        <defs>
+<radialGradient id="head-fade"><stop offset="72%" stop-color="white"/><stop offset="100%" stop-color="black"/></radialGradient>
+<mask id="white-head-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1280" height="1280"><ellipse cx="855" cy="411" rx="366" ry="305" fill="url(#head-fade)"/></mask>
+<mask id="black-head-mask" maskUnits="userSpaceOnUse" x="0" y="0" width="1280" height="1280"><ellipse cx="338" cy="666" rx="330" ry="318" fill="url(#head-fade)"/></mask>
+          <clipPath id="white-cat-clip">
+            <path d="M 640 50 C 955 35 1135 228 1230 490 C 1196 518 1180 523 1195 578 C 1260 888 1075 1158 715 1180 C 949 1108 1010 936 972 817 C 933 685 855 625 718 611 C 619 610 568 581 561 520 L 587 354 C 529 402 448 443 382 446 C 273 408 307 270 377 175 C 444 92 541 52 640 50 Z"/>
+          </clipPath>
+          <clipPath id="black-cat-clip">
+            <path d="M 640 50 C 413 54 298 153 208 285 C 138 380 77 454 68 505 L 82 590 C 13 798 119 1046 332 1150 C 457 1211 591 1214 715 1180 C 949 1108 1010 936 972 817 C 933 685 855 625 718 611 C 619 610 568 581 561 520 L 587 354 C 529 402 448 443 382 446 C 273 408 307 270 377 175 C 444 92 541 52 640 50 Z"/>
+          </clipPath>
+        </defs>
+        <image class="portal-base" href="img/portal.png" x="0" y="0" width="1280" height="1280" preserveAspectRatio="xMidYMid meet"/>
+        <image class="cat-layer cat-layer--white" href="img/portal.png" x="0" y="0" width="1280" height="1280" preserveAspectRatio="xMidYMid meet" clip-path="url(#white-cat-clip)" mask="url(#white-head-mask)"/>
+        <image class="cat-layer cat-layer--black" href="img/portal.png" x="0" y="0" width="1280" height="1280" preserveAspectRatio="xMidYMid meet" clip-path="url(#black-cat-clip)" mask="url(#black-head-mask)"/>
+        <path class="zone" role="button" tabindex="0" aria-label="Escuchar al gato blanco" data-cat="white" d="M 640 50 C 955 35 1135 228 1230 490 C 1196 518 1180 523 1195 578 C 1260 888 1075 1158 715 1180 C 949 1108 1010 936 972 817 C 933 685 855 625 718 611 C 619 610 568 581 561 520 L 587 354 C 529 402 448 443 382 446 C 273 408 307 270 377 175 C 444 92 541 52 640 50 Z"/>
+        <path class="zone" role="button" tabindex="0" aria-label="Escuchar al gato negro" data-cat="black" d="M 640 50 C 413 54 298 153 208 285 C 138 380 77 454 68 505 L 82 590 C 13 798 119 1046 332 1150 C 457 1211 591 1214 715 1180 C 949 1108 1010 936 972 817 C 933 685 855 625 718 611 C 619 610 568 581 561 520 L 587 354 C 529 402 448 443 382 446 C 273 408 307 270 377 175 C 444 92 541 52 640 50 Z"/>
       </svg>
     </div>
+    <div id="story-overlay" hidden>
+      <section class="story-panel" role="dialog" aria-modal="true" aria-label="Relato ficticio del oráculo" aria-describedby="story-text" tabindex="-1">
+        <p id="story-text"></p>
+      </section>
+    </div>
+    <div id="easter-egg" role="status" aria-live="polite" hidden>¡Se ve que tienes mucho tiempo!!</div>
   </main>
 </body>
 </html>

@@ -1,16 +1,34 @@
-# Destiny — portal inicial
+# Destiny — oráculo de los dos gatos
 
-Abre `index.html` directamente en un navegador. No requiere instalación, compilación ni conexión a Internet.
+Portal estático con HTML, CSS y JavaScript nativos. Al abrir solo aparece la ilustración centrada sobre negro. No requiere instalación ni servicios externos.
 
-HTML, CSS y JavaScript nativos. La única imagen visible es `img/portal.png`, intacta, centrada sobre negro. Las dos zonas SVG transparentes siguen las siluetas y responden al clic, tap, Enter o espacio.
+Abre index.html directamente o visita https://oprbguitar.github.io/yingcat/. GitHub Pages publica desde main y su raíz.
 
-Blanco: respiración suave de 1100ms. Negro: reacción breve de 680ms. Cada pulsación reinicia la respuesta; al terminar se elimina la transformación. Se respeta la preferencia de movimiento reducido.
+## Interacción
 
-Se utiliza el fallback solicitado: se anima la ilustración completa según el gato pulsado. Dado que el pelaje y los bigotes se cruzan y la base es una imagen fusionada, mover copias recortadas sobre una base estática produciría bordes duplicados. No se modificó la imagen ni se incorporaron dependencias.
+El gato blanco cuenta una historia favorable; el negro, una ficción sombría. Hover mueve solamente la cabeza recortada; clic o tap provoca una reacción antes de abrir el relato. Enter y espacio también activan cada gato. Escape, un toque fuera del panel o sobre la posición del gato cierran el relato, sin recargar.
 
-La dirección visual y las excepciones al selector se documentan en DESIGN.md. Alcance: exclusivamente pantalla inicial.
+Cinco pulsaciones rápidas en 1800ms interrumpen la reacción y muestran durante 2200ms: «¡Se ve que tienes mucho tiempo!!». Después vuelve la ilustración.
 
-Validación: navegador Edge mediante Playwright a 360/768/1280/1600px; centrado y ausencia de scroll; ambas zonas y reinicio por clic; retorno sin transform; teclado; touch; movimiento reducido de 160ms; sin errores de JavaScript. Auditoría design-lint: APROBADO, puntaje 0.
+Todo el contenido es ficción literaria de entretenimiento, generado localmente. No ofrece diagnósticos ni certezas sobre sucesos reales. Los relatos tienen 100–220 palabras en español; el motor evita repeticiones consecutivas por gato y usa crypto.getRandomValues con fallback.
 
-Portal público: https://oprbguitar.github.io/yingcat/
-Publicación: GitHub Pages desde la raíz de la rama main. Los cambios enviados a main actualizan el portal automáticamente.
+## Archivos
+
+- index.html: ilustración original, máscaras SVG de cabeza y zonas curvas; diálogo y mensaje temporales.
+- portal.css: tokens, estados, animaciones, lectura móvil y movimiento reducido.
+- portal.js: Pointer Events y máquina de estados; un único relato activo, temporizadores cancelables y foco de teclado.
+- predictions.js: fragmentos compatibles, estructuras narrativas y generador aleatorio sin red.
+- tests/: pruebas del motor y de las interacciones en navegador.
+- DESIGN.md: decisiones visuales y accesibilidad.
+
+La imagen img/portal.png se conserva sin modificaciones. Las máscaras suavizan las uniones; una copia de la cabeza seleccionada se desplaza sobre la base estática. Debido al origen rasterizado, el efecto es aproximado, no una animación anatómica.
+
+## Verificación
+
+Motor: node --test tests/predictions.test.cjs.
+Interfaz: node tests/portal.test.cjs. Esta prueba usa Playwright del runtime local de Codex y Edge instalado; fuera de ese entorno adapta la ruta require de Playwright.
+
+No se agregaron dependencias de producción, APIs, fuentes remotas ni audio. Después de cargar los archivos no se realizan solicitudes para generar relatos.
+
+El motor ofrece 8192 combinaciones (4096 por gato) con ocho estructuras narrativas. Pruebas exhaustivas: 100–220 palabras y ausencia de textos duplicados. Cobertura del motor: 99.19% líneas y 84% ramas.
+En móviles pequeños el panel puede cubrir la ilustración. Se puede cerrar tocando el margen exterior o con un toque breve en la posición de cualquier gato, incluso bajo el panel. Desplazar el contenido, mantener el toque o seleccionar texto no lo cierra.

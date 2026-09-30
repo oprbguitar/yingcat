@@ -1,52 +1,77 @@
 :root {
   --background: #000;
+  --text: #e8e5df;
+  --panel: rgba(12, 12, 12, .9);
   --portal-size: min(78vmin, 850px);
-  --white-duration: 1100ms;
-  --black-duration: 680ms;
+  --panel-width: 680px;
+  --font-reading: Georgia, 'Times New Roman', serif;
+  --font-size: clamp(17px, 1.5vw, 20px);
+  --line-height: 1.65;
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
   --ease: cubic-bezier(.22, 1, .36, 1);
-  --white-x: 1px;
-  --white-y: -3px;
-  --white-scale: 1.012;
-  --white-angle: .4deg;
-  --black-x: -2px;
-  --black-scale: 1.018;
-  --black-angle: -.8deg;
-  --black-return: .5deg;
+  --white-duration: 650ms;
+  --black-duration: 520ms;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html, body { margin: 0; padding: 0; background: var(--background); overflow: hidden; }
 main { width: 100vw; height: 100dvh; display: grid; place-items: center; overflow: hidden; }
 .portal { position: relative; width: var(--portal-size); aspect-ratio: 1; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
-.portal img, .zones { position: absolute; inset: 0; width: 100%; height: 100%; }
-.portal img { object-fit: contain; -webkit-user-drag: none; pointer-events: none; }
-.zones { overflow: visible; }
-.zones path { fill: transparent; stroke: none; cursor: pointer; outline: none; }
-/* Keyboard focus follows the illustration instead of adding visible UI. */
-.zones path:focus-visible { filter: brightness(1); }
-.portal:has(path:focus-visible) img { filter: brightness(1.08); }
-.portal.white img { animation: breathe var(--white-duration) var(--ease); }
-.portal.black img { animation: alert var(--black-duration) var(--ease); }
-@keyframes breathe {
+.portal-art { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; transition: opacity 350ms var(--ease); }
+.portal.dimmed .portal-art { opacity: .32; }
+.portal-base, .cat-layer { pointer-events: none; user-select: none; -webkit-user-drag: none; transform-box: view-box; }
+.cat-layer { transition: transform 350ms var(--ease); }
+.cat-layer--white { transform-origin: 67% 33%; }
+.cat-layer--black { transform-origin: 27% 52%; }
+.zone { fill: transparent; stroke: none; cursor: pointer; outline: none; touch-action: manipulation; }
+.zone:focus-visible { stroke: var(--text); stroke-width: 2; stroke-dasharray: 8 8; }
+.portal[data-state="white-hover"] .cat-layer--white { transform: translateY(-2px) rotate(.4deg) scale(1.008); }
+.portal[data-state="black-hover"] .cat-layer--black { transform: translateX(2px) rotate(-.5deg) scale(1.01); }
+.portal[data-state="white-react"] .cat-layer--white { animation: white-reaction var(--white-duration) var(--ease); will-change: transform; }
+.portal[data-state="black-react"] .cat-layer--black { animation: black-reaction var(--black-duration) var(--ease); will-change: transform; }
+@keyframes white-reaction {
   0%, 100% { transform: none; }
-  45% { transform: translate(var(--white-x), var(--white-y)) scale(var(--white-scale)) rotate(var(--white-angle)); }
+  35% { transform: translateY(-5px) rotate(-1deg) scale(1.025); }
+  65% { transform: translateY(-2px) rotate(1deg) scale(1.012); }
 }
-@keyframes alert {
+@keyframes black-reaction {
   0%, 100% { transform: none; }
-  30% { transform: translateX(var(--black-x)) rotate(var(--black-angle)) scale(var(--black-scale)); }
-  65% { transform: rotate(var(--black-return)); }
+  30% { transform: translateX(-3px) rotate(-1.5deg) scale(1.025); }
+  65% { transform: translateX(3px) rotate(1deg) scale(1.012); }
 }
-@media (max-width: 767px) { :root { --portal-size: min(92vmin, 700px); } }
+#story-overlay { position: fixed; inset: 0; display: grid; place-items: center; padding: var(--space-2); z-index: 2; touch-action: manipulation; }
+.story-panel {
+  width: min(100%, var(--panel-width)); max-height: calc(100dvh - var(--space-4)); overflow-y: auto;
+  padding: var(--space-4); color: var(--text); background: var(--panel); backdrop-filter: blur(3px);
+  font-family: var(--font-reading); font-size: var(--font-size); line-height: var(--line-height);
+  overscroll-behavior: contain; scrollbar-width: thin; outline: none;
+}
+#story-text { margin: 0; white-space: pre-line; }
+#story-overlay[data-cat="white"][data-phase="opening"] .story-panel { animation: gentle-entrance 500ms var(--ease); }
+#story-overlay[data-cat="black"][data-phase="opening"] .story-panel { animation: dark-entrance 350ms var(--ease); }
+#story-overlay[data-phase="closing"] { animation: leave 180ms ease-out forwards; }
+@keyframes gentle-entrance { from { opacity: 0; transform: translateY(8px) scale(.97); } to { opacity: 1; transform: none; } }
+/* One continuous reveal, without flashing. */
+@keyframes dark-entrance { from { opacity: 0; transform: translateX(-3px) scale(1.01); } to { opacity: 1; transform: none; } }
+@keyframes leave { to { opacity: 0; } }
+#easter-egg {
+  position: fixed; inset: 0; z-index: 3; display: grid; place-items: center; padding: var(--space-3);
+  background: rgba(0,0,0,.84); color: var(--text); text-align: center;
+  font: var(--font-size)/var(--line-height) var(--font-reading); pointer-events: none;
+  animation: egg-message 2200ms var(--ease) forwards;
+}
+@keyframes egg-message { 0%, 100% { opacity: 0; } 12%, 85% { opacity: 1; } }
+@media (max-width: 767px) { :root { --portal-size: min(92vmin, 700px); } .story-panel { padding: var(--space-3); } }
 @media (prefers-reduced-motion: reduce) {
-  :root {
-    --white-duration: 160ms;
-    --black-duration: 160ms;
-    --white-x: 0px;
-    --white-y: -.5px;
-    --white-scale: 1;
-    --white-angle: 0deg;
-    --black-x: .5px;
-    --black-scale: 1;
-    --black-angle: 0deg;
-    --black-return: 0deg;
-  }
+  .cat-layer { transition: none; transform: none !important; }
+  .portal[data-state="white-react"] .cat-layer--white,
+  .portal[data-state="black-react"] .cat-layer--black { animation: quiet-reaction 100ms ease-out; will-change: opacity; }
+  .portal-art { transition: opacity 80ms; }
+  #story-overlay[data-phase="opening"] .story-panel { animation: quiet-reveal 80ms ease-out; }
+  #story-overlay[data-phase="closing"] { animation-duration: 40ms; }
+  @keyframes quiet-reaction { 50% { opacity: .88; } }
+  @keyframes quiet-reveal { from { opacity: 0; } to { opacity: 1; } }
 }

@@ -1,9 +1,11 @@
-# Dirección visual
+# Dirección visual — oráculo local
 
-Modo experience: ilustración única sobre negro puro, centrada, sin texto ni decoración.
-El selector propone portada tipográfica y paleta hielo/magenta; se descartan porque contradicen el encargo explícito.
-Se consideraron capas recortadas, máscara suavizada y movimiento de imagen completa. Se elige el fallback autorizado: el pelaje y los bigotes cruzan la unión y duplicar el raster dejaría contornos estáticos visibles al desplazar una copia.
+Experience: imagen centrada en negro puro al inicio; relato como única superficie temporal de lectura. Se mantiene la identidad existente.
+Se consideraron relato en columna lateral, texto sobre la ilustración y panel central; se elige el panel central por el encargo y la legibilidad móvil. El selector tipográfico/magenta no corresponde al negro puro solicitado.
 
-Tokens: fondo #000; tamaño desktop min(78vmin,850px), móvil min(92vmin,700px); separación 0; forma sin marco; tipografía no aplicable; movimiento blanco 1100ms, negro 680ms; easing cubic-bezier(.22,1,.36,1).
-Zonas curvas proporcionales siguen la unión de las siluetas, con acceso mediante mouse, touch y teclado. Solo el cursor cambia en hover. El foco de teclado usa la propia silueta, sin elemento adicional.
-Responsive a 360, 768, 1280 y 1600px. Reduced motion: respuesta de 160ms y desplazamiento máximo 0.5px. No hay animación ambiental, scroll ni cambios de layout.
+Tokens previos a la implementación: negro #000, texto #e8e5df, panel rgba(12,12,12,.9); serif Georgia local para lectura; ancho 680px; texto 17–20px; interlineado 1.65; escala de espacio 8/16/24/32px; sin borde ni sombra. Blanco 650ms, negro 520ms, entrada relato 500/350ms, cierre 180ms, mensaje 2200ms. Easing cubic-bezier(.22,1,.36,1).
+
+Capas raster idénticas con máscaras de cabeza suavizadas y relativas al viewBox. Zonas curvas existentes se conservan. Hover solo con mouse y movimiento de cabeza; sin recoloración. Reduced motion elimina transformaciones y usa opacidad.
+Estados explícitos: idle, white-hover, black-hover, white-react, black-react, story-opening, story-visible, story-closing, easter-egg. Sin apilar relatos. Cinco pointerdowns en 1800ms interrumpen el flujo.
+Accesibilidad: teclado, foco visible en silueta, diálogo con nombre español y foco de lectura, Escape, cierre exterior, restauración de foco. Panel desplazable internamente; sin scroll de la página. Responsive 360/768/1280/1600px.
+Sin APIs, tipografías remotas, dependencias añadidas, sonidos ni destellos. Los relatos son ficción literaria, no diagnósticos ni certezas sobre el futuro real.
