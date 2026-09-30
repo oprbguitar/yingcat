@@ -5,6 +5,21 @@
     return root.Predictions.secureRandomIndex(Array.from({ length }));
   }
 
+  function varyStyle(container) {
+    const panel = container.closest('.story-panel');
+    if (!panel) return;
+    const choices = {
+      palette: ['ember', 'ocean', 'moss', 'plum', 'amber'],
+      font: ['serif', 'humanist', 'mono'],
+      size: ['small', 'medium', 'large']
+    };
+    Object.entries(choices).forEach(([property, values]) => {
+      const selected = randomIndex(values.length);
+      const index = values[selected] === panel.dataset[property] ? (selected + 1) % values.length : selected;
+      panel.dataset[property] = values[index];
+    });
+  }
+
   function phraseRange(text) {
     const difficulties = [
       'primero aparecen dudas, cansancio y una carpeta desordenada',
@@ -51,6 +66,7 @@
   }
 
   function render(container, text, cat) {
+    varyStyle(container);
     container.replaceChildren();
     const parts = text.split(/(\n\s*\n)/);
     const offset = randomIndex(2);

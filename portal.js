@@ -73,18 +73,21 @@ function showEgg() {
   pendingTimer = setTimeout(restore, 2200);
 }
 
-function hitsCatAt(x, y) {
+function catAt(x, y) {
   const point = new DOMPoint(x, y);
-  return zones.some(zone => {
+  return zones.find(zone => {
     const matrix = zone.getScreenCTM();
     return matrix && zone.isPointInFill(point.matrixTransform(matrix.inverse()));
-  });
+  })?.dataset.cat;
 }
+
+function hitsCatAt(x, y) { return Boolean(catAt(x, y)); }
 
 // Capture before activation so the fifth press cancels the pending prediction.
 document.querySelector('main').addEventListener('pointerdown', event => {
   if (!event.isPrimary || event.button !== 0 || event.target.closest('.story-close')) return;
-  if (hitsCatAt(event.clientX, event.clientY)) CatSound.play();
+  const pressedCat = catAt(event.clientX, event.clientY);
+  if (pressedCat) CatSound.play(pressedCat);
   if (event.target.closest('.story-panel') && !hitsCatAt(event.clientX, event.clientY)) return;
   if (state === 'easter-egg') return;
   const now = performance.now();
@@ -106,7 +109,7 @@ for (const zone of zones) {
   zone.addEventListener('keydown', event => {
     if ((event.key === 'Enter' || event.key === ' ') && !event.repeat) {
       event.preventDefault();
-      CatSound.play();
+      CatSound.play(cat);
       activate(cat, zone);
     }
   });

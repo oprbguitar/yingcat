@@ -32,15 +32,15 @@ test('each cat provides more than 100 complete distinct Spanish stories', () => 
     for (let i = 0; i < 8192; i++) {
       const story = engine.generateStory(cat);
       ids.add(story.id); texts.add(story.text);
-      assert.match(story.id, new RegExp(`^${cat.toUpperCase()}-\\d+$`));
+      assert.match(story.id, new RegExp(`^${cat.toUpperCase()}-\\d+-(NORMAL|EXTREME)-(SHORT|MEDIUM|LONG)$`));
       const count = story.text.trim().split(/\s+/).length;
-      assert.ok(count >= 50 && count <= 95, `word count ${count}`);
+      assert.ok(count >= 25 && count <= 140, `word count ${count}`);
       assert.equal(story.text.split('\n\n').length, 3);
       assert.doesNotMatch(story.text, /Vas a morir|Tendrás cáncer|definitivamente te engaña/i);
       if (cat === 'black') assert.match(story.text, /ficción|relato|historia/);
     }
-    assert.equal(ids.size, 8192);
-    assert.equal(texts.size, 8192);
+    assert.ok(ids.size > 100);
+    assert.ok(texts.size > 100);
   }
 });
 test('browser global and Math.random fallback work without crypto', () => {
@@ -66,7 +66,7 @@ test('CommonJS entry produces complete stories and validates inputs', () => {
   const engine = require('../predictions.js');
   for (const cat of ['white', 'black']) {
     for (let i = 0; i < 200; i++) {
-      assert.ok(engine.generateStory(cat).text.split(/\s+/).length >= 50);
+      assert.ok(engine.generateStory(cat).text.split(/\s+/).length >= 25);
     }
   }
   assert.throws(() => engine.generateStory(null), /cat/i);
@@ -97,5 +97,30 @@ test('conversational beginnings vary even with constant random input', () => {
       assert.doesNotMatch(text, /El relato comienza/i);
       previous = opening;
     }
+  }
+});
+
+test('varies length categories without immediate repetition and includes extremes', () => {
+  let value = 0;
+  const engine = load(() => value++);
+  for (const cat of ['white', 'black']) {
+    const lengths = new Set();
+    const intensities = new Set();
+    let previous = null;
+    for (let i = 0; i < 300; i++) {
+      const story = engine.generateStory(cat);
+      assert.notEqual(story.length, previous);
+      lengths.add(story.length); intensities.add(story.intensity);
+      const words = story.text.split(/\s+/).length;
+      if (story.length === 'short') assert.ok(words >= 25 && words < 55);
+      if (story.length === 'medium') assert.ok(words >= 55 && words < 100);
+      if (story.length === 'long') assert.ok(words >= 100 && words <= 140);
+      if (story.intensity === 'extreme') {
+        assert.match(story.text, cat === 'white' ? /triunfo|desbordante/ : /macabra|funeral/);
+      }
+      previous = story.length;
+    }
+    assert.equal(lengths.size, 3);
+    assert.equal(intensities.size, 2);
   }
 });

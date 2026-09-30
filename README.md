@@ -10,7 +10,7 @@ El gato blanco cuenta una historia favorable; el negro, una ficción sombría. H
 
 Cinco pulsaciones rápidas en 1800ms interrumpen la reacción y muestran durante 2200ms: «¡Se ve que tienes mucho tiempo!!». Después vuelve la ilustración.
 
-Todo el contenido es ficción literaria de entretenimiento, generado localmente. No ofrece diagnósticos ni certezas sobre sucesos reales. Los relatos tienen 50–95 palabras en español; el motor evita repeticiones consecutivas por gato y usa crypto.getRandomValues con fallback.
+Todo el contenido es ficción literaria de entretenimiento, generado localmente. No ofrece diagnósticos ni certezas sobre sucesos reales. Los relatos tienen 25–140 palabras en español; el motor evita repeticiones consecutivas por gato y usa crypto.getRandomValues con fallback.
 
 ## Archivos
 
@@ -38,4 +38,6 @@ Actualización: Cerrar mensaje permanece visible mientras se desplaza el relato,
 El panel ocupa como máximo 62% del alto en desktop y 70% en móvil. Algunas letras al azar reciben brillo, un pulso lento de dos ciclos o una leve fractura visual. Se conserva el texto y el modo de movimiento reducido elimina el pulso. Prueba: node tests/variety.test.cjs.
 
 
-Catálogo actual: 98 304 combinaciones (49 152 por gato), con doce aperturas independientes por gato y ocho estructuras. Cobertura del motor: 99.36% líneas y 85.19% ramas; nueve pruebas unitarias.
+Catálogo modular con doce aperturas, ocho estructuras, longitud breve/media/larga e intensidad normal/extrema. No repite el texto, la apertura ni la categoría de longitud inmediatamente por gato. Cobertura del motor: 99.44% líneas y 89.19% ramas; diez pruebas unitarias.
+
+Cada mensaje cambia paleta, fondo del panel, tipografía local y tamaño, sin repetir inmediatamente cada atributo. Se mantienen contraste y scroll interno. Gato blanco: miau suave; gato negro: grito de protesta sintetizado más agudo y áspero, con volumen moderado. Verificación: node tests/appearance.test.cjs.

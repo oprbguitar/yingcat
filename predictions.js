@@ -110,8 +110,18 @@
     (opening, scene, turn, practical, relationship, ending) => [`${opening} ${scene} ${turn}`, `${practical} ${relationship}`, ending],
     (opening, scene, turn, practical, relationship, ending) => [`${opening} ${scene}`, `${practical} ${relationship}`, `${turn} ${ending}`]
   ];
+  const intensityTurns = {
+    white: 'Un triunfo inesperado trae alegría desbordante: hasta lo imposible parece abrirse.',
+    black: 'La escena se vuelve macabra: un funeral sin nombre borra toda esperanza.'
+  };
+  const extensions = {
+    white: 'Después, una conversación permite reconocer cuánto había pesado aquella preocupación. No hace falta resolver la vida entera: basta con disfrutar ese respiro, aceptar compañía y reservar una tarde para lo que importa. El personaje mira alrededor y descubre que también puede recibir sin sentirse en deuda.',
+    black: 'Después, una conversación permite reconocer cuánto había crecido aquella sombra. Nadie ofrece una respuesta firme: las versiones se contradicen, las habitaciones parecen más frías y el camino de regreso pierde sus señales. El personaje mira alrededor y descubre que incluso las voces conocidas suenan demasiado lejos.'
+  };
+  const lengths = ['short', 'medium', 'long'];
   const combinations = Array.from({ length: 12 * 8 * 4 * 4 * 4 * 8 });
   let previousIds = Object.freeze({ white: null, black: null });
+  let previousLengths = Object.freeze({ white: null, black: null });
   let previousOpenings = Object.freeze({ white: null, black: null });
 
   function secureRandomIndex(array) {
@@ -130,6 +140,11 @@
   function generateStory(cat) {
     if (cat !== 'white' && cat !== 'black') throw new TypeError('Unknown cat');
     let combination = secureRandomIndex(combinations);
+    let lengthIndex = combination % lengths.length;
+    if (lengthIndex === previousLengths[cat]) lengthIndex = (lengthIndex + 1) % lengths.length;
+    previousLengths = Object.freeze({ ...previousLengths, [cat]: lengthIndex });
+    const length = lengths[lengthIndex];
+    const intensity = Math.floor(combination / 3) % 2 ? 'extreme' : 'normal';
     let openingIndex = combination % 12;
     if (openingIndex === previousOpenings[cat]) {
       openingIndex = (openingIndex + 1) % 12;
@@ -143,9 +158,17 @@
     const practical = consequences[cat][Math.floor(contentIndex / 16) % 4];
     const relationship = connections[cat][Math.floor(contentIndex / 4) % 4];
     const ending = endings[cat][contentIndex % 4];
+    const turn = intensity === 'extreme' ? intensityTurns[cat] : scenario[1];
+    const opening = openings[cat][openingIndex];
+    const paragraphs = length === 'short'
+      ? [`${opening} ${scenario[0]}`, turn, ending]
+      : templates[Math.floor(contentIndex / 512)](opening, scenario[0], turn, practical, relationship, ending);
+    const text = (length === 'long'
+      ? [paragraphs[0], `${paragraphs[1]} ${extensions[cat]}`, paragraphs[2]]
+      : paragraphs).join('\n\n');
     return {
-      id: `${cat.toUpperCase()}-${String(combination + 1).padStart(4, '0')}`,
-      text: templates[Math.floor(contentIndex / 512)](openings[cat][openingIndex], scenario[0], scenario[1], practical, relationship, ending).join('\n\n')
+      id: `${cat.toUpperCase()}-${String(combination + 1).padStart(4, '0')}-${intensity.toUpperCase()}-${length.toUpperCase()}`,
+      text, length, intensity
     };
   }
 

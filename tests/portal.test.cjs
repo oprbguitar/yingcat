@@ -33,7 +33,7 @@ async function visibleStory(page, cat, touch = false) {
   await waitState(page, 'story-visible');
   const text = await page.locator('#story-text').innerText();
   const words = text.trim().split(/\s+/).length;
-  assert.ok(words >= 50 && words <= 95, `Story has ${words} words`);
+  assert.ok(words >= 25 && words <= 140, `Story has ${words} words`);
   return text;
 }
 

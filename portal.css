@@ -116,3 +116,21 @@ main { width: 100vw; height: 100dvh; display: grid; place-items: center; overflo
   .letter-pulse { animation: none; text-shadow: 0 0 4px currentColor; }
   .letter-fracture { transform: none; }
 }
+
+/* Each message selects a readable local typeface, scale and color atmosphere. */
+.story-panel[data-palette="ember"] { --panel: #26131b; --story-red: #ffc2b3; --story-blue: #ffcdeb; --highlight-surface: #493024; --highlight-text: #ffe6b0; }
+.story-panel[data-palette="ocean"] { --panel: #102233; --story-red: #a2e6ff; --story-blue: #c5cfff; --highlight-surface: #273e52; --highlight-text: #e9f8ff; }
+.story-panel[data-palette="moss"] { --panel: #142b24; --story-red: #c2ecc1; --story-blue: #a6e5df; --highlight-surface: #304634; --highlight-text: #f1f6bc; }
+.story-panel[data-palette="plum"] { --panel: #281c35; --story-red: #efd1ff; --story-blue: #ffb9d2; --highlight-surface: #4a3155; --highlight-text: #fff0bc; }
+.story-panel[data-palette="amber"] { --panel: #302516; --story-red: #ffe0a3; --story-blue: #ffd0b4; --highlight-surface: #4b3b27; --highlight-text: #fff6d6; }
+.story-panel[data-font="serif"] { --font-reading: Georgia, Palatino, serif; }
+.story-panel[data-font="humanist"] { --font-reading: 'Trebuchet MS', Verdana, sans-serif; }
+.story-panel[data-font="mono"] { --font-reading: 'Courier New', Courier, monospace; }
+.story-panel[data-size="small"] { --font-size: 17px; }
+.story-panel[data-size="medium"] { --font-size: 20px; }
+.story-panel[data-size="large"] { --font-size: 23px; }
+@media (max-width: 767px) {
+  .story-panel[data-size="small"] { --font-size: 16px; }
+  .story-panel[data-size="medium"] { --font-size: 18px; }
+  .story-panel[data-size="large"] { --font-size: 20px; }
+}
