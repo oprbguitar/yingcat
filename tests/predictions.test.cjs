@@ -37,7 +37,8 @@ test('each cat provides more than 100 complete distinct Spanish stories', () => 
       assert.ok(count >= 25 && count <= 140, `word count ${count}`);
       assert.equal(story.text.split('\n\n').length, 3);
       assert.doesNotMatch(story.text, /Vas a morir|Tendrás cáncer|definitivamente te engaña/i);
-      if (cat === 'black') assert.match(story.text, /ficción|relato|historia/);
+      assert.doesNotMatch(story.text, /ficción|relato|historia|fábula|el personaje/i);
+      assert.match(story.text, /\b(te|ti|tú|tu|tus|puedes|podrías|imagínate|piensa|crees|necesitas|quieras)\b/i);
     }
     assert.ok(ids.size > 100);
     assert.ok(texts.size > 100);
@@ -123,4 +124,21 @@ test('varies length categories without immediate repetition and includes extreme
     assert.equal(lengths.size, 3);
     assert.equal(intensities.size, 2);
   }
+});
+
+
+test('invented examples invite perseverance without attributed testimony or threats', () => {
+  let value = 0;
+  const engine = load(() => value++);
+  const examples = new Set();
+  for (const cat of ['white', 'black']) {
+    for (let i = 0; i < 1000; i++) {
+      const story = engine.generateStory(cat);
+      if (story.text.includes('Piensa en Elena')) examples.add('Elena');
+      if (story.text.includes('A Mateo le tomó')) examples.add('Mateo');
+      assert.doesNotMatch(story.text, /tu amigo me contó|vas a morir|morirás|tendrás cáncer|testimonio real/i);
+      assert.doesNotMatch(story.text, /ficción|relato|historia|fábula|el personaje/i);
+    }
+  }
+  assert.equal(examples.size, 2);
 });

@@ -134,3 +134,20 @@ main { width: 100vw; height: 100dvh; display: grid; place-items: center; overflo
   .story-panel[data-size="medium"] { --font-size: 18px; }
   .story-panel[data-size="large"] { --font-size: 20px; }
 }
+
+/* Gentle settling and a one-time reveal keep reading calm and responsive. */
+.story-panel[data-palette="ember"] { --panel: #30232c; }
+.story-panel[data-palette="ocean"] { --panel: #1d2b38; }
+.story-panel[data-palette="moss"] { --panel: #223229; }
+.story-panel[data-palette="plum"] { --panel: #2e273a; }
+.story-panel[data-palette="amber"] { --panel: #352d22; }
+#story-overlay[data-phase="visible"] .story-panel { animation: message-settle 700ms var(--ease) both; }
+#story-overlay[data-phase="opening"] .story-paragraph { animation: words-arrive 650ms var(--ease) both; }
+#story-overlay[data-phase="opening"] .story-paragraph:nth-of-type(2) { animation-delay: 70ms; }
+#story-overlay[data-phase="opening"] .story-paragraph:nth-of-type(3) { animation-delay: 140ms; }
+@keyframes message-settle { 0% { transform: none; } 40% { transform: translate(2px, -2px) rotate(.15deg); } 100% { transform: none; } }
+@keyframes words-arrive { from { opacity: .25; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  #story-overlay[data-phase="visible"] .story-panel,
+  #story-overlay[data-phase="opening"] .story-paragraph { animation: none; }
+}

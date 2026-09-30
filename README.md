@@ -38,6 +38,8 @@ Actualización: Cerrar mensaje permanece visible mientras se desplaza el relato,
 El panel ocupa como máximo 62% del alto en desktop y 70% en móvil. Algunas letras al azar reciben brillo, un pulso lento de dos ciclos o una leve fractura visual. Se conserva el texto y el modo de movimiento reducido elimina el pulso. Prueba: node tests/variety.test.cjs.
 
 
-Catálogo modular con doce aperturas, ocho estructuras, longitud breve/media/larga e intensidad normal/extrema. No repite el texto, la apertura ni la categoría de longitud inmediatamente por gato. Cobertura del motor: 99.44% líneas y 89.19% ramas; diez pruebas unitarias.
+Catálogo modular con doce aperturas, ocho estructuras, longitud breve/media/larga e intensidad normal/extrema. No repite el texto, la apertura ni la categoría de longitud inmediatamente por gato. Cobertura del motor: 99.44% líneas y 89.19% ramas; once pruebas unitarias.
 
 Cada mensaje cambia paleta, fondo del panel, tipografía local y tamaño, sin repetir inmediatamente cada atributo. Se mantienen contraste y scroll interno. Gato blanco: miau suave; gato negro: grito de protesta sintetizado más agudo y áspero, con volumen moderado. Verificación: node tests/appearance.test.cjs.
+
+Voz del oráculo: todos los mensajes te hablan directamente, sin introducirlos como ficción, relato o historia. Algunas variantes incorporan microanécdotas épicas de superación con personajes inventados; son recursos literarios, no testimonios ni citas atribuidas a personas reales. Los mensajes oscuros mantienen posibilidades y lenguaje figurado, sin diagnósticos ni afirmaciones ciertas sobre muerte, engaños o sucesos personales. El panel se acomoda suavemente al aparecer y el texto entra por párrafos; reduced motion elimina esas animaciones. Verificación adicional: node tests/motion.test.cjs.
